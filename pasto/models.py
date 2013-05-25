@@ -6,7 +6,7 @@ import string
 import random
 import datetime
 
-from .highlight import DEFAULT_LEXER, LEXERS
+from .highlight import DEFAULT_LEXER, LEXERS, highlight_object
 
 class Code(models.Model):
     slug = models.SlugField(max_length=10, blank=True, db_index=True)
@@ -29,6 +29,12 @@ class Code(models.Model):
         if not self.pk:
             self.slug = generate_unique_slug(max_length=10) or self.pk
         super(Code, self).save(*args, **kwargs)
+
+    def highlight(self):
+        """
+        Returns the HTML-formatted highlighted code.
+        """
+        return highlight_object(self)
 
 def generate_unique_slug(min_length=4, max_length=10, attempts=10):
     """

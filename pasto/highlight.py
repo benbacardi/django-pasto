@@ -1,4 +1,7 @@
 """Highlighting options for Pasto"""
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters import HtmlFormatter
+from pygments import highlight
 
 LEXERS = (
     ('bash', 'Bash'),
@@ -20,3 +23,9 @@ LEXERS = (
 )
 
 DEFAULT_LEXER = 'python'
+
+def highlight_object(code):
+    """
+    Returns HTML-formatted highlighted code.
+    """
+    return highlight(code.code, get_lexer_by_name(code.lexer), HtmlFormatter())
