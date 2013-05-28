@@ -41,10 +41,7 @@ class Code(models.Model):
         """
         Returns a friendly-format diff of the two code objects.
         """
-        one, two = self, code
-        if self.created >= code.created:
-            one, two = two, one
-        return get_diff(one, two)
+        return get_diff(self.code, code.code)
 
 def generate_unique_slug(min_length=4, max_length=10, attempts=10):
     """
