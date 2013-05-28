@@ -6,6 +6,7 @@ import string
 import random
 import datetime
 
+from .utils import get_diff
 from .highlight import DEFAULT_LEXER, LEXERS, highlight_object
 
 class Code(models.Model):
@@ -35,6 +36,15 @@ class Code(models.Model):
         Returns the HTML-formatted highlighted code.
         """
         return highlight_object(self)
+
+    def diff(self, code):
+        """
+        Returns a friendly-format diff of the two code objects.
+        """
+        one, two = self, code
+        if self.created >= code.created:
+            one, two = two, one
+        return get_diff(one, two)
 
 def generate_unique_slug(min_length=4, max_length=10, attempts=10):
     """
