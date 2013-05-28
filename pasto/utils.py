@@ -1,6 +1,10 @@
 """Utilities for Pasto"""
 import difflib
 
+from django.contrib.auth.decorators import login_required
+
+from .app_settings import ALLOW_ANONYMOUS_POSTS
+
 def enum(**enums):
     return type('Enum', (), enums)
 
@@ -19,3 +23,8 @@ def get_diff(s1, s2):
         elif line.startswith('+'): tag = DiffLineTypes.LINE_ADDED
         output.append((tag, line[2:]))
     return output
+
+def login_possibly_required(function=None, *args, **kwargs):
+    if not ALLOW_ANONYMOUS_POSTS:
+        return login_required(function, *args, **kwargs)
+    return function
